@@ -1,0 +1,17 @@
+{
+  "name": "todo",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "build-tailwind": "npx tailwindcss -i ./src/index.css -o ./dist/css/style.css --watch",
+    "start": "bun run build-tailwind -- --watch",
+    "tsc": "tsc -p tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.9",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
