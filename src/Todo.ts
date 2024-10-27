@@ -40,7 +40,7 @@ export class TodoList {
     // Create the list container in the DOM
     const containerClass = [
       "grid",
-      "grid-cols-4",
+      "md:grid-cols-3",
       "gap-3",
       "place-items-stretch",
     ];
@@ -82,7 +82,9 @@ export class TodoList {
   saveLocalStorage() {
     localStorage.setItem("todoItems", JSON.stringify(this.items));
   }
-
+  emptyLocalStorage() {
+    localStorage.removeItem("todoItems");
+  }
   // Load items from localStorage
   loadLocalStorage() {
     const items = localStorage.getItem("todoItems");
@@ -98,8 +100,16 @@ export class TodoList {
   addItem(item: Todo) {
     this.itemsProxy.push(item);
   }
-  removeItem(index: number) {
-    this.itemsProxy.splice(index, 1);
+  removeItem(item: Todo) {
+    const index = this.itemsProxy.indexOf(item);
+    this.itemsProxy = this.itemsProxy.toSpliced(index, 1);
+    this.saveLocalStorage();
+    this.renderList();
+  }
+  deleteAll() {
+    this.itemsProxy = [];
+    this.emptyLocalStorage();
+    this.renderList();
   }
   completeItem(item: Todo) {
     item.isDone = !item.isDone;
@@ -113,21 +123,33 @@ export class TodoList {
   // Method to update the DOM when a new item is added
   addItemToDOM(item: Todo) {
     const itemClass = [
-      "bg-slate-900",
+      "bg-matisse-900",
       "grid",
-      "grid-cols-6",
+      "grid-cols-7",
       "p-4",
       "w-full",
       "rounded-lg",
+      "items-center",
     ];
 
     const div = this.addDiv(itemClass);
     const span = this.addSpan();
     span.textContent = item.title;
-    div.append(span);
+
+    if (item.isDone) {
+      span.classList.add("line-through");
+    }
+    if (
+      new Date(item.date).toISOString().split("T")[0] ===
+      new Date().toISOString().split("T")[0]
+    ) {
+      div.classList.add("border-2", "border-matisse-400");
+    }
     div.setAttribute("id", "todo_" + this.items.indexOf(item).toString());
     this.container.append(div);
     div.append(this.addCheckbox(item));
+    div.append(span);
+    div.append(this.addDeleteButton(item));
   }
 
   addDiv(classList: string[]): HTMLDivElement {
@@ -144,7 +166,13 @@ export class TodoList {
 
   addCheckbox(item: Todo): HTMLInputElement {
     const checkbox = document.createElement("input");
-    checkbox.classList.add("form-checkbox", "h-5", "w-5", "col-span-1");
+    checkbox.classList.add(
+      "form-checkbox",
+      "bg-matisse-100",
+      "h-5",
+      "w-5",
+      "col-span-1"
+    );
     checkbox.checked = item.isDone;
     checkbox.addEventListener("change", (e) => {
       if (e.target) {
@@ -153,5 +181,24 @@ export class TodoList {
     });
     checkbox.type = "checkbox";
     return checkbox;
+  }
+  addDeleteButton(item: Todo): HTMLButtonElement {
+    const button = document.createElement("button");
+    button.classList.add(
+      "bg-slate-950",
+      "hover:bg-gray-950",
+      "text-white",
+      "p-2",
+      "rounded-lg",
+      "col-span-1"
+    );
+    button.textContent = "🗑️";
+    button.addEventListener("click", (e) => {
+      console.log(e);
+      console.log("Delete Clicked");
+      this.removeItem(item);
+      this.renderList();
+    });
+    return button;
   }
 }
