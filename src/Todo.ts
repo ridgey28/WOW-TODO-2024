@@ -13,10 +13,11 @@ export class Todo {
 }
 
 export class TodoList {
-  private container: HTMLDivElement;
-  private emptyMessage: HTMLParagraphElement;
+  container: HTMLDivElement;
+  // emptyMessage: HTMLParagraphElement;
   items: Todo[];
   itemsProxy: Todo[];
+  storeID: string = "todo-list";
   constructor() {
     // Initialize an array and wrap it in a Proxy
     this.items = this.loadLocalStorage(); // Load items from localStorage
@@ -29,15 +30,30 @@ export class TodoList {
         // If a new item was added, update the DOM
         if (!isNaN(Number(property))) {
           this.addItemToDOM(value);
-          this.updateDisplay();
           this.saveLocalStorage();
+          this.updateDisplay();
         }
-
+        return true;
+      },
+      deleteProperty: (target, property) => {
+        target.splice(Number(property), 1); // Remove item and reindex array
+        this.saveLocalStorage();
+        this.updateDisplay();
         return true;
       },
     });
 
-    // Create the list container in the DOM
+    this.container = this.createContainer(); // Create the container for the list
+    this.updateDisplay(); // Initial check to set up the display
+    document.body.append(this.container);
+  }
+
+  createEmptyMessage() {
+    let p = document.createElement("p");
+    p.textContent = "No items in your Todo List.";
+    return p;
+  }
+  createContainer() {
     const containerClass = [
       "grid",
       "md:grid-cols-3",
@@ -45,23 +61,18 @@ export class TodoList {
       "place-items-stretch",
     ];
     //creates the container for the list
-    this.container = this.addDiv(containerClass);
-    document.body.append(this.container);
-
-    // Create a "No items" message element
-    this.emptyMessage = document.createElement("p");
-    this.emptyMessage.textContent = "No items in your Todo List.";
-    this.container.appendChild(this.emptyMessage);
-
-    this.updateDisplay(); // Initial check to set up the display
-    this.renderList(); // Render list items from stored data
+    return this.addDiv(containerClass);
   }
 
   updateDisplay() {
+    this.container.innerHTML = ""; // Clear current items in the DOM to prevent duplicates
+    let emptyMessage = this.createEmptyMessage(); // Create the empty message element
+    this.container.append(emptyMessage);
     if (this.length > 0) {
-      this.emptyMessage.classList.add("hidden");
+      emptyMessage.classList.add("hidden");
+      this.itemsProxy.forEach((item) => this.addItemToDOM(item));
     } else {
-      this.emptyMessage.classList.add("block");
+      emptyMessage.classList.add("block");
     }
   }
 
@@ -74,27 +85,23 @@ export class TodoList {
         : dateB - dateA; // Descending order (latest to earliest)
     });
 
-    this.renderList(); // Re-render sorted items
-    this.saveLocalStorage(); // Save sorted order to localStorage
+    this.updateDisplay();
+    this.saveLocalStorage();
   }
-
   // Save items to localStorage
   saveLocalStorage() {
-    localStorage.setItem("todoItems", JSON.stringify(this.items));
+    localStorage.setItem(this.storeID, JSON.stringify(this.items));
   }
   emptyLocalStorage() {
-    localStorage.removeItem("todoItems");
+    localStorage.removeItem(this.storeID);
+    this.updateDisplay();
   }
   // Load items from localStorage
   loadLocalStorage() {
-    const items = localStorage.getItem("todoItems");
-    return items ? JSON.parse(items) : [];
-  }
-
-  // Render list items from stored data
-  renderList() {
-    this.container.innerHTML = ""; // Clear current items in the DOM to prevent duplicates
-    this.itemsProxy.forEach((item) => this.addItemToDOM(item));
+    const items: Todo[] = JSON.parse(
+      localStorage.getItem(this.storeID) || "[]"
+    );
+    return items.map((item) => new Todo(item.title, new Date(item.date)));
   }
   // Method to add a new item to the proxy array
   addItem(item: Todo) {
@@ -102,22 +109,23 @@ export class TodoList {
   }
   removeItem(item: Todo) {
     const index = this.itemsProxy.indexOf(item);
-    this.itemsProxy = this.itemsProxy.toSpliced(index, 1);
-    this.saveLocalStorage();
-    this.renderList();
+    if (index >= 0) {
+      this.itemsProxy.splice(index, 1); // Directly remove item using splice
+    }
   }
   deleteAll() {
-    this.itemsProxy = [];
-    this.emptyLocalStorage();
-    this.renderList();
+    this.items.length = 0; // Clear the original array
+    this.itemsProxy.length = 0; // Clear the Proxy
+    this.saveLocalStorage();
+    this.updateDisplay();
   }
   completeItem(item: Todo) {
     item.isDone = !item.isDone;
     this.saveLocalStorage();
-    this.renderList();
   }
 
   get length() {
+    console.log(this.itemsProxy.length);
     return this.itemsProxy.length;
   }
   // Method to update the DOM when a new item is added
@@ -194,10 +202,8 @@ export class TodoList {
     );
     button.textContent = "🗑️";
     button.addEventListener("click", (e) => {
-      console.log(e);
-      console.log("Delete Clicked");
       this.removeItem(item);
-      this.renderList();
+      this.updateDisplay();
     });
     return button;
   }
