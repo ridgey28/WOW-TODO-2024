@@ -1,5 +1,8 @@
 # todo
 
+Install Tailwind CLI
+The dist folder is served by the bun server.
+
 To install dependencies:
 
 ```bash

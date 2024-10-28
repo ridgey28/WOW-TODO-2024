@@ -7,13 +7,12 @@
     "allowJs": true, // Allow JavaScript files to be compiled
     "checkJs": true, // Enable type-checking in JavaScript files
     "outDir": "./dist/js", // Output directory for compiled files
-    "rootDir": "./src", // Root directory of your source files
-    // "moduleResolution": "NodeNext", // Specify module resolution strategy
+    "rootDir": "./src/js", // Root directory of your source files
     "baseUrl": "./dist/js", // Base URL to resolve non-relative module names
     "allowImportingTsExtensions": false, // Allow importing of .ts files
     "noEmit": false, // Do not emit output files
     "skipLibCheck": true, // Skip type-checking of library declaration files
-    "removeComments": true,
+    "removeComments": true, // Remove comments from the output
   },
   "include": [
     "src/**/*.ts",

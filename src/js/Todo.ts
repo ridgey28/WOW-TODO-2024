@@ -14,7 +14,6 @@ export class Todo {
 
 export class TodoList {
   container: HTMLDivElement;
-  // emptyMessage: HTMLParagraphElement;
   items: Todo[];
   itemsProxy: Todo[];
   storeID: string = "todo-list";
@@ -60,7 +59,6 @@ export class TodoList {
       "gap-3",
       "place-items-stretch",
     ];
-    //creates the container for the list
     return this.addDiv(containerClass);
   }
 
@@ -122,16 +120,17 @@ export class TodoList {
   completeItem(item: Todo) {
     item.isDone = !item.isDone;
     this.saveLocalStorage();
+    this.updateDisplay();
   }
 
   get length() {
-    console.log(this.itemsProxy.length);
     return this.itemsProxy.length;
   }
   // Method to update the DOM when a new item is added
   addItemToDOM(item: Todo) {
     const itemClass = [
-      "bg-matisse-900",
+      "dark:bg-matisse-900",
+      "bg-matisse-200",
       "grid",
       "grid-cols-7",
       "p-4",
@@ -144,6 +143,11 @@ export class TodoList {
     const span = this.addSpan();
     span.textContent = item.title;
 
+    div.setAttribute("id", "todo_" + this.items.indexOf(item).toString());
+    this.container.append(div);
+    div.append(this.addCheckbox(item));
+    div.append(span);
+    div.append(this.addDeleteButton(item));
     if (item.isDone) {
       span.classList.add("line-through");
     }
@@ -153,11 +157,6 @@ export class TodoList {
     ) {
       div.classList.add("border-2", "border-matisse-400");
     }
-    div.setAttribute("id", "todo_" + this.items.indexOf(item).toString());
-    this.container.append(div);
-    div.append(this.addCheckbox(item));
-    div.append(span);
-    div.append(this.addDeleteButton(item));
   }
 
   addDiv(classList: string[]): HTMLDivElement {
@@ -193,7 +192,8 @@ export class TodoList {
   addDeleteButton(item: Todo): HTMLButtonElement {
     const button = document.createElement("button");
     button.classList.add(
-      "bg-slate-950",
+      "bg-matisse-300",
+      "dark:bg-matisse-800",
       "hover:bg-gray-950",
       "text-white",
       "p-2",

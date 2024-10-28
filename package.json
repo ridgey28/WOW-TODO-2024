@@ -3,15 +3,15 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "build-tailwind": "npx tailwindcss -i ./src/index.css -o ./dist/css/style.css --watch",
-    "start": "bun run build-tailwind -- --watch",
-    "tsc": "tsc -p tsconfig.json --watch"
+    "build-tailwind": "npx tailwindcss -i ./src/css/index.css -o ./dist/css/style.css --watch",
+    "tsc": "tsc -p tsconfig.json --watch",
+    "start": "bun run build-tailwind | bun run tsc | bun run server.tsx --watch"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.9",
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.6.3"
   }
 }

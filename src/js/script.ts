@@ -57,6 +57,8 @@ if (buttonsContainer) {
       date.value = getDate(1);
     } else if (value === "today-7") {
       date.value = getDate(7);
+    } else if (value === "today") {
+      date.value = getDate();
     } else if (value === "sort") {
       list.sortList();
     } else if (value === "delete-all") {
