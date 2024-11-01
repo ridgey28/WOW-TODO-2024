@@ -1,4 +1,4 @@
-import { Todo, TodoList } from "./Todo.js";
+import { TodoList } from "./Todo.js";
 let list = new TodoList();
 
 /**
@@ -40,7 +40,7 @@ if (submit) {
       alert("Please enter a todo and a date");
       return;
     }
-    list.addItem(new Todo(todo.value, new Date(date.value)));
+    list.addItem(todo.value, new Date(date.value));
     todo.value = "";
   });
 }
