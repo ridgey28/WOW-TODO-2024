@@ -4,7 +4,7 @@ import { join } from "path";
 // Define the directory to serve files from
 const DIST_DIR = join(import.meta.dir, "dist");
 
-serve({
+const server = serve({
   port: 3000,
   fetch(req) {
     // Remove query parameters and get the file path
@@ -21,3 +21,4 @@ serve({
     }
   },
 });
+console.log("Server running on http://localhost:3000");

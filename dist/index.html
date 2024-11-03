@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wow Todo</title>
+    <meta name="description" content="A simple todo app">
+    <meta icon="./favicon.ico">
+    <link href="./css/style.css" rel="stylesheet">
+    <script type="module" src="./js/script.js" defer></script>
+
+</head>
+
+<body class="bg-matisse-100 dark:bg-matisse-950 text-black dark:text-white m-10">
+    <div id="form">
+        <form class="grid grid-cols-7 grid-flow-row">
+            <input type="text" class="form-input h-14 col-span-5 bg-matisse-100 text-black rounded-l-lg" name="todo"
+                id="todo" placeholder="Enter your todo" required>
+            <input type="date" class="form-input h-14 font-bold text-black col-span-1 bg-matisse-200" name="date"
+                min="2024-10-28" required id="date">
+
+            <button
+                class="font-bold p-4 col-span-1 bg-gradient-to-br from bg-matisse-600 to-matisse-500 hover:bg-matisse-700 text-white rounded-r-lg"
+                type="submit" id="submit">Submit</button>
+            <p class="my-4">Hit <kbd>Enter</kbd> to save.</p>
+        </form>
+    </div>
+    <div id="buttons" class="grid grid-cols-2 gap-4 my-6">
+        <div class="grid gap-4 grid-flow-col">
+            <button
+                class="font-bold rounded-lg bg-gradient-to-br from bg-matisse-600 to-matisse-500 hover:bg-matisse-700 h-16 text-white justify-center"
+                id="sort">Sort</button>
+            <button
+                class="font-bold rounded-lg bg-gradient-to-br from bg-rose-600 to-rose-500 hover:bg-rose-700  h-16 text-white justify-center"
+                id="delete-all">Delete</button>
+        </div>
+        <div class="grid grid-flow-col gap-4">
+            <button
+                class="font-bold rounded-lg border border-matisse-500 h-16 text-matisse-900 hover:text-matisse-950  dark:text-matisse-500 dark:hover:text-matisse-400 justify-center"
+                id="today">Today</button>
+            <button
+                class="font-bold rounded-lg border border-matisse-500  h-16  text-matisse-900 hover:text-matisse-950  dark:text-matisse-500 dark:hover:text-matisse-400 justify-center"
+                id="today-1">Today +1</button>
+            <button
+                class="font-bold rounded-lg border border-matisse-500  h-16 text-matisse-900 hover:text-matisse-950  dark:text-matisse-500 dark:hover:text-matisse-400 justify-center"
+                id="today-7">Today +7</button>
+        </div>
+    </div>
+
+</body>
+
+</html>
