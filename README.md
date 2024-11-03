@@ -1,4 +1,16 @@
-# todo
+# WOW-TODO-2024
+
+A simple to-do app. Built using TypeScript, Tailwind & Bun. 
+Features:
+- Scheduling todos for today, tomorrow and +7 days.
+- Sorting
+- Highlight overdue, due today.
+- Delete singular or all
+- Uses browser localStorage to store your todos.
+- Horizontal layout
+
+## Demo
+[Demo](https://www.tracyridge.co.uk/demos/todo-app/)
 
 To install dependencies:
 
