@@ -1,7 +1,8 @@
 # WOW-TODO-2024
 
-A simple to-do app. Built using TypeScript, Tailwind & Bun. 
+A simple to-do app. Built using TypeScript, Tailwind & Bun.
 Features:
+
 - Scheduling todos for today, tomorrow and +7 days.
 - Sorting
 - Highlight overdue, due today.
@@ -10,6 +11,7 @@ Features:
 - Horizontal layout
 
 ## Demo
+
 [Demo](https://www.tracyridge.co.uk/demos/todo-app/)
 
 Install Tailwind CLI
@@ -23,8 +25,6 @@ bun install
 
 To run:
 
-```bash
-bun run index.ts
-```
+See package.json
 
 This project was created using `bun init` in bun v1.1.27. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
